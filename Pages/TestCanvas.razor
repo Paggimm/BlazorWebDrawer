@@ -1,0 +1,36 @@
+@page "/testcanvas"
+@using Blazor.Extensions.Canvas.Canvas2D
+@using Blazor.Extensions
+@inherits LayoutComponentBase
+
+<PageTitle>TestCanvas</PageTitle>
+
+<h3>TestCanvas</h3>
+
+<div class="canvas-container" height="@height" width="@width" @onclick="DrawSquare">
+    <BECanvas Width=@width Height=@height @ref="_canvasReference"></BECanvas>
+</div>
+
+@code {
+    private BECanvas _canvasReference;
+    protected Canvas2DContext _canvasContext;
+    private int brushSize { get; set; } = 100;
+
+    [Parameter]
+    public int width { get; set; } = 500;
+
+    [Parameter]
+    public int height { get; set; } = 500;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _canvasContext = await _canvasReference.CreateCanvas2DAsync();
+    }
+
+    private async void DrawSquare(MouseEventArgs mouseEvent)
+    {
+        await _canvasContext.SetFillStyleAsync("blue");
+        await _canvasContext.FillRectAsync(mouseEvent.OffsetX - (brushSize/2), mouseEvent.OffsetY - (brushSize/2), 100, 100);
+    }
+
+}
