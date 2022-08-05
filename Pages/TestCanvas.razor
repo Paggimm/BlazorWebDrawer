@@ -7,21 +7,24 @@
 
 <h3>TestCanvas</h3>
 
-<div class="canvas-container" height="@height" width="@width" @onclick="DrawSquare">
-    <BECanvas Width=@width Height=@height @ref="_canvasReference"></BECanvas>
+<div class="canvas-container" style=@canvasStyle @onclick="DrawSquare">
+    <BECanvas Width=@width Height=@height @ref="_canvasReference"/>
 </div>
 
 @code {
     private BECanvas _canvasReference;
-    protected Canvas2DContext _canvasContext;
+    private Canvas2DContext _canvasContext;
     private int brushSize { get; set; } = 100;
-
+    
     [Parameter]
     public int width { get; set; } = 500;
 
     [Parameter]
     public int height { get; set; } = 500;
-
+    
+    // since blazor does not yet support feeding variables to css a style-string is created to align div-container with canvas
+    private string canvasStyle  => "height: " + height + "px; width: "+ width+"px;";
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         _canvasContext = await _canvasReference.CreateCanvas2DAsync();
