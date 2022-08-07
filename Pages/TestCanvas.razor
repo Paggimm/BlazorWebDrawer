@@ -7,33 +7,55 @@
 
 <h3>TestCanvas</h3>
 
-<div class="canvas-container" style=@canvasStyle @onclick="DrawSquare">
-    <BECanvas Width=@width Height=@height @ref="_canvasReference"/>
+<div class="canvas-container" style=@CanvasStyle @onmousedown="DrawClick" @onmouseup="DisableDrawing" @onmousemove="Draw">
+    <BECanvas Width=@Width Height=@Weight @ref="_canvasReference"/>
 </div>
 
 @code {
     private BECanvas _canvasReference;
-    private Canvas2DContext _canvasContext;
-    private int brushSize { get; set; } = 100;
+    private Canvas2DContext? _canvasContext;
+    private int BrushSize { get; set; } = 100;
+    private bool IsDrawing { get; set; }
     
     [Parameter]
-    public int width { get; set; } = 500;
+    public int Width { get; set; } = 500;
 
     [Parameter]
-    public int height { get; set; } = 500;
+    public int Weight { get; set; } = 500;
     
     // since blazor does not yet support feeding variables to css a style-string is created to align div-container with canvas
-    private string canvasStyle  => "height: " + height + "px; width: "+ width+"px;";
+    private string CanvasStyle  => "height: " + Weight + "px; width: " + Width+"px;";
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         _canvasContext = await _canvasReference.CreateCanvas2DAsync();
     }
 
-    private async void DrawSquare(MouseEventArgs mouseEvent)
+    /// Enables Drawing Mode and triggers initial Click-Drawing Call
+    private void DrawClick(MouseEventArgs mouseEvent)
     {
-        await _canvasContext.SetFillStyleAsync("blue");
-        await _canvasContext.FillRectAsync(mouseEvent.OffsetX - (brushSize/2), mouseEvent.OffsetY - (brushSize/2), 100, 100);
+        EnableDrawing();
+        Draw(mouseEvent);
+    }
+
+    /// draws onto the canvas, if drawing is enabled
+    private async void Draw(MouseEventArgs mouseEvent)
+    {
+        if (IsDrawing)
+        {
+            await _canvasContext.SetFillStyleAsync("blue");
+            await _canvasContext.FillRectAsync(mouseEvent.OffsetX - (BrushSize/2d), mouseEvent.OffsetY - (BrushSize/2d), 100, 100);
+        }
+    }
+
+    private void EnableDrawing()
+    {
+        IsDrawing = true;
+    }
+
+    private void DisableDrawing()
+    {
+        IsDrawing = false;
     }
 
 }
