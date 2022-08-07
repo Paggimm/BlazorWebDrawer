@@ -1,6 +1,7 @@
 @page "/testcanvas"
-@using Blazor.Extensions.Canvas.Canvas2D
 @using Blazor.Extensions
+@using DefaultNamespace
+@using System.Diagnostics.CodeAnalysis
 @inherits LayoutComponentBase
 
 <PageTitle>TestCanvas</PageTitle>
@@ -12,10 +13,8 @@
 </div>
 
 @code {
-    private BECanvas _canvasReference;
-    private Canvas2DContext? _canvasContext;
-    private int BrushSize { get; set; } = 100;
-    private bool IsDrawing { get; set; }
+    private BECanvas? _canvasReference;
+    private Drawer? _drawer;
     
     [Parameter]
     public int Width { get; set; } = 500;
@@ -28,7 +27,11 @@
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _canvasContext = await _canvasReference.CreateCanvas2DAsync();
+        var canvasContext = await _canvasReference.CreateCanvas2DAsync();
+        if (_drawer == null)
+        {
+            _drawer = new(canvasContext);
+        }
     }
 
     /// Enables Drawing Mode and triggers initial Click-Drawing Call
@@ -39,23 +42,19 @@
     }
 
     /// draws onto the canvas, if drawing is enabled
-    private async void Draw(MouseEventArgs mouseEvent)
+    private void Draw(MouseEventArgs mouseEvent)
     {
-        if (IsDrawing)
-        {
-            await _canvasContext.SetFillStyleAsync("blue");
-            await _canvasContext.FillRectAsync(mouseEvent.OffsetX - (BrushSize/2d), mouseEvent.OffsetY - (BrushSize/2d), 100, 100);
-        }
+        _drawer!.Draw(mouseEvent);
     }
 
     private void EnableDrawing()
     {
-        IsDrawing = true;
+        _drawer!.DrawingEnabled = true;
     }
 
     private void DisableDrawing()
     {
-        IsDrawing = false;
+        _drawer!.DrawingEnabled = false;
     }
 
 }
