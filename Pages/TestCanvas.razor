@@ -18,10 +18,10 @@
     private int BrushSize { get; set; } = 10;
     
     [Parameter]
-    public int Width { get; set; } = 500;
+    public int Width { get; set; } = 800;
 
     [Parameter]
-    public int Weight { get; set; } = 500;
+    public int Weight { get; set; } = 800;
     
     // since blazor does not yet support feeding variables to css a style-string is created to align div-container with canvas
     private string CanvasStyle  => "height: " + Weight + "px; width: " + Width+"px;";

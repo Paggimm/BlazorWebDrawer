@@ -1,4 +1,3 @@
-using System.Drawing;
 using Blazor.Extensions.Canvas.Canvas2D;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -30,5 +29,10 @@ public class Drawer
     public void SetBrushSize(int size)
     {
         _drawerConfig.BrushSize = size;
+    }
+
+    public void SetColor(string colorCode)
+    {
+        _drawerConfig.Color = colorCode;
     }
 }

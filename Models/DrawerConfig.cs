@@ -6,5 +6,5 @@ namespace DefaultNamespace;
 public class DrawerConfig
 {
     public string Color { get; set; } = "#357FFF";
-    public int BrushSize { get; set; } = 100;
+    public int BrushSize { get; set; } = 10;
 }
