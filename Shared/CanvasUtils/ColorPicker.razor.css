@@ -1,0 +1,9 @@
+.color-picker-item-container {
+    display: flex;
+    gap: 5px;
+}
+
+.color-picker-item {
+    width: 100px;
+    height: 100px;
+}

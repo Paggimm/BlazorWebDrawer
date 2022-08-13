@@ -1,28 +1,38 @@
 @namespace DefaultNamespace
 
-<div class="color-picker">
-    <h3>ColorPicker</h3>
-    <RadzenColorPicker @bind-value="Color"/>
+<div class="color-picker-container">
+    <h3>Color Picker</h3>
+    <div class="color-picker-item-container">
+        @foreach (var color in ColorList)
+        {
+            <div class="color-picker-item" style="@GetItemColorString(color)" @onclick="@(() => UpdateColor(color))">
+                @color
+            </div>
+        }
+    </div>
 </div>
 
 @code {
-    private string _color = "#357FFF";
 
-    private string Color
-    {
-        get => _color;
-        set
+    private string[] ColorList { get; set; } =
         {
-            _color = value;
-            UpdateColor(_color);
-        }
-    }
+            "#4D8EFF", "#FF824D", "#FFF94D", "#4DFF64"
+        };
+
+    private string Color { get; set; } = "#357FFF";
 
     [Parameter]
-    public EventCallback<string> ColorChanged{ get; set; }
+    public EventCallback<string> ColorChanged { get; set; }
+
+    private string GetItemColorString(string color)
+    {
+        return $"background-color: {color};";
+    }
 
     private async void UpdateColor(string color)
     {
+        Color = color;
         await ColorChanged.InvokeAsync(color);
     }
+
 }
