@@ -1,7 +1,19 @@
-h1 {
+h3 {
     color: brown;
+    text-align: center;
+}
+
+.canvas-utility-container {
+    display: flex;
+    gap: 2vw;
 }
 
 .canvas-container {
     border: 1px solid black;
+}
+
+.utility-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
 }

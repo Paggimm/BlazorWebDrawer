@@ -7,16 +7,22 @@
 
 <h3>TestCanvas</h3>
 
-<div class="canvas-container" style=@CanvasStyle @onmousedown="DrawClick" @onmouseup="DisableDrawing" @onmousemove="Draw">
-    <BECanvas Width=@Width Height=@Weight @ref="_canvasReference"/>
+<div class="canvas-utility-container">
+    <div class="canvas-container" style=@CanvasStyle @onmousedown="DrawClick" @onmouseup="DisableDrawing" @onmousemove="Draw">
+        <BECanvas Width=@Width Height=@Weight @ref="_canvasReference"/>
+    </div>
+    <div class="utility-container">
+        <BrushSizeChooser BrushSizeChanged="UpdateBrushSize"/>
+        <ColorPicker ColorChanged="UpdateColor"/>
+    </div>
 </div>
-<BrushSizeChooser BrushSizeChanged="UpdateBrushSize"/>
 
 @code {
     private BECanvas? _canvasReference;
     private Drawer? _drawer;
     private int BrushSize { get; set; } = 10;
-    
+    private string Color { get; set; } = "#357FFF";
+
     [Parameter]
     public int Width { get; set; } = 800;
 
@@ -40,6 +46,11 @@
         BrushSize = size;
     }
 
+    private void UpdateColor(string color)
+    {
+        Color = color;
+    }
+
     /// Enables Drawing Mode and triggers initial Click-Drawing Call
     private void DrawClick(MouseEventArgs mouseEvent)
     {
@@ -51,6 +62,7 @@
     private void Draw(MouseEventArgs mouseEvent)
     {
         _drawer!.SetBrushSize(BrushSize);
+        _drawer!.SetColor(Color);
         _drawer!.Draw(mouseEvent);
     }
 

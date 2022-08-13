@@ -1,0 +1,26 @@
+<div class="color-picker">
+    <h3>ColorPicker</h3>
+    <RadzenColorPicker @bind-value="Color"/>
+</div>
+
+@code {
+    private string _color = "#357FFF";
+
+    private string Color
+    {
+        get => _color;
+        set
+        {
+            _color = value;
+            UpdateColor(_color);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> ColorChanged{ get; set; }
+
+    private async Task UpdateColor(string color)
+    {
+        await ColorChanged.InvokeAsync(color);
+    }
+}
