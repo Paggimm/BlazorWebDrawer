@@ -10,7 +10,15 @@
     <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.6" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Typescript.MSBuild" Version="4.7.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Radzen.Blazor" Version="3.20.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\JsInterop\SaveCanvasToImage.ts" />
   </ItemGroup>
 
 </Project>
