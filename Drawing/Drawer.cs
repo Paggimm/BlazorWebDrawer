@@ -1,3 +1,4 @@
+using System.Drawing;
 using Blazor.Extensions.Canvas.Canvas2D;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -24,5 +25,10 @@ public class Drawer
             await _canvasContext.SetFillStyleAsync(_drawerConfig.Color);
             await _canvasContext.FillRectAsync(mouseEvent.OffsetX - (_drawerConfig.BrushSize/2d), mouseEvent.OffsetY - (_drawerConfig.BrushSize/2d), _drawerConfig.BrushSize, _drawerConfig.BrushSize);
         }
+    }
+
+    public void SetBrushSize(int size)
+    {
+        _drawerConfig.BrushSize = size;
     }
 }

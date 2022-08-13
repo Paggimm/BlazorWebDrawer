@@ -1,7 +1,6 @@
 @page "/testcanvas"
 @using Blazor.Extensions
 @using DefaultNamespace
-@using System.Diagnostics.CodeAnalysis
 @inherits LayoutComponentBase
 
 <PageTitle>TestCanvas</PageTitle>
@@ -11,10 +10,12 @@
 <div class="canvas-container" style=@CanvasStyle @onmousedown="DrawClick" @onmouseup="DisableDrawing" @onmousemove="Draw">
     <BECanvas Width=@Width Height=@Weight @ref="_canvasReference"/>
 </div>
+<BrushSizeChooser BrushSizeChanged="UpdateBrushSize"/>
 
 @code {
     private BECanvas? _canvasReference;
     private Drawer? _drawer;
+    private int BrushSize { get; set; } = 10;
     
     [Parameter]
     public int Width { get; set; } = 500;
@@ -34,6 +35,11 @@
         }
     }
 
+    private void UpdateBrushSize(int size)
+    {
+        BrushSize = size;
+    }
+
     /// Enables Drawing Mode and triggers initial Click-Drawing Call
     private void DrawClick(MouseEventArgs mouseEvent)
     {
@@ -44,6 +50,7 @@
     /// draws onto the canvas, if drawing is enabled
     private void Draw(MouseEventArgs mouseEvent)
     {
+        _drawer!.SetBrushSize(BrushSize);
         _drawer!.Draw(mouseEvent);
     }
 

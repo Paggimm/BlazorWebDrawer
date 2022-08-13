@@ -1,0 +1,24 @@
+<h3>BrushSizeChooser</h3>
+<input type="number" @bind-value="BrushSize"/>
+
+@code {
+    private int _brushSize = 10;
+    private int BrushSize
+    {
+        get => _brushSize;
+        set
+        {
+            _brushSize = value;
+            UpdateBrushSize();
+        }
+    }
+    
+    /// emits the new brush size
+    [Parameter]
+    public EventCallback<int> BrushSizeChanged { get; set; }
+    
+    private async Task UpdateBrushSize()
+    {
+        await BrushSizeChanged.InvokeAsync(BrushSize);
+    }
+}
