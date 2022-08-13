@@ -1,3 +1,5 @@
+@namespace DefaultNamespace
+
 <div class="color-picker">
     <h3>ColorPicker</h3>
     <RadzenColorPicker @bind-value="Color"/>
@@ -19,7 +21,7 @@
     [Parameter]
     public EventCallback<string> ColorChanged{ get; set; }
 
-    private async Task UpdateColor(string color)
+    private async void UpdateColor(string color)
     {
         await ColorChanged.InvokeAsync(color);
     }

@@ -1,0 +1,19 @@
+@inject IJSRuntime JsRuntime
+@namespace DefaultNamespace
+
+<button class="save-button" @onclick="OnSaveClicked">
+    save
+</button>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public Drawer Drawer { get; set; } = null!;
+    
+    private async void OnSaveClicked()
+    {
+        await JsRuntime.InvokeAsync<object>(
+            "DownloadCanvasImage"
+            );
+    }
+}

@@ -2,7 +2,6 @@
 @using Blazor.Extensions
 @using DefaultNamespace
 @inherits LayoutComponentBase
-@inject IJSRuntime JSRuntime
 
 <PageTitle>TestCanvas</PageTitle>
 
@@ -15,12 +14,9 @@
     <div class="utility-container">
         <BrushSizeChooser BrushSizeChanged="UpdateBrushSize"/>
         <ColorPicker ColorChanged="UpdateColor"/>
+        <SaveImageButton Drawer="@_drawer"/>
     </div>
 </div>
-
-<button class="save-button" @onclick="OnSaveClicked">
-    save
-</button>
 
 @code {
     private BECanvas? _canvasReference;
@@ -39,9 +35,9 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var canvasContext = await _canvasReference.CreateCanvas2DAsync();
-        if (_drawer == null)
+        if (firstRender)
         {
+            var canvasContext = await _canvasReference.CreateCanvas2DAsync();
             _drawer = new(canvasContext);
         }
     }
@@ -61,15 +57,6 @@
     {
         EnableDrawing();
         Draw(mouseEvent);
-    }
-
-    /// save Current Canvas to Image
-    private async void OnSaveClicked()
-    {
-        _drawer.Save();
-        await JSRuntime.InvokeAsync<object>(
-            "DownloadCanvasImage"
-            );
     }
 
     /// draws onto the canvas, if drawing is enabled

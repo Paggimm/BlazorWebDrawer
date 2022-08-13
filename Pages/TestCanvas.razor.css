@@ -20,5 +20,7 @@ h3 {
 
 .save-button {
     width: 20%;
+    margin-left: 32vw;
+    margin-top: 2vw;
     background-color: red;
 }
