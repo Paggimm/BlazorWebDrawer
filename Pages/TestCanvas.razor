@@ -2,13 +2,14 @@
 @using Blazor.Extensions
 @using DefaultNamespace
 @inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
 
 <PageTitle>TestCanvas</PageTitle>
 
 <h3>TestCanvas</h3>
 
 <div class="canvas-utility-container">
-    <div class="canvas-container" style=@CanvasStyle @onmousedown="DrawClick" @onmouseup="DisableDrawing" @onmousemove="Draw">
+    <div id="canvas-container" style=@CanvasStyle @onmousedown="DrawClick" @onmouseup="DisableDrawing" @onmousemove="Draw">
         <BECanvas Width=@Width Height=@Weight @ref="_canvasReference"/>
     </div>
     <div class="utility-container">
@@ -16,6 +17,10 @@
         <ColorPicker ColorChanged="UpdateColor"/>
     </div>
 </div>
+
+<button class="save-button" @onclick="OnSaveClicked">
+    save
+</button>
 
 @code {
     private BECanvas? _canvasReference;
@@ -28,10 +33,10 @@
 
     [Parameter]
     public int Weight { get; set; } = 800;
-    
+
     // since blazor does not yet support feeding variables to css a style-string is created to align div-container with canvas
-    private string CanvasStyle  => "height: " + Weight + "px; width: " + Width+"px;";
-    
+    private string CanvasStyle => "height: " + Weight + "px; width: " + Width + "px;";
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         var canvasContext = await _canvasReference.CreateCanvas2DAsync();
@@ -56,6 +61,15 @@
     {
         EnableDrawing();
         Draw(mouseEvent);
+    }
+
+    /// save Current Canvas to Image
+    private async void OnSaveClicked()
+    {
+        _drawer.Save();
+        await JSRuntime.InvokeAsync<object>(
+            "DownloadCanvasImage"
+            );
     }
 
     /// draws onto the canvas, if drawing is enabled

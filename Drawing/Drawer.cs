@@ -26,6 +26,14 @@ public class Drawer
         }
     }
 
+    /// <summary>
+    /// Saves the current canvas content to a file
+    /// </summary>
+    public async void Save()
+    {
+        
+    }
+
     public void SetBrushSize(int size)
     {
         _drawerConfig.BrushSize = size;
